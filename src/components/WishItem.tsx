@@ -5,9 +5,14 @@ import {
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { Edit, Trash } from 'lucide-react'
+import { Wish } from '@/types/wishes'
+
+type Props = {
+  item: Wish
+}
 
 
-const WishItem = ({ item }) => {
+const WishItem = ({ item }: Props) => {
   return (
     <Card>
       <CardContent className='flex items-center p-4'>
@@ -31,7 +36,7 @@ const WishItem = ({ item }) => {
           )}
         </div>
         <div className='flex items-center space-x-2'>
-          <Switch checked={item.completed} />
+          <Switch checked={item.acquired} />
           <Button variant='outline' size='sm'>
             <Edit className='h-4 w-4' />
           </Button>
