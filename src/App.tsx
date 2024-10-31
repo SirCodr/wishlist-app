@@ -2,9 +2,10 @@ import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from './components/navigation/Layout';
 import HomePage from './pages/Home';
-import MyList from './pages/MyList';
-import SharedList from './pages/SharedList';
 import UserSettings from './pages/UserSettings';
+import MyListPage from './pages/wishes/MyList';
+import WishesPage from './pages/wishes/Wishes';
+import SharedPage from './pages/wishes/Shared';
 
 
 function App() {
@@ -13,8 +14,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path='my-list' element={<MyList />} />
-          <Route path='shared' element={<SharedList />} />
+          <Route path='my-list' element={<MyListPage />} />
+          <Route path='my-list/:id' element={<WishesPage />} />
+          <Route path='shared' element={<SharedPage />} />
           <Route path='user' element={<UserSettings />} />
         </Route>
       </Routes>

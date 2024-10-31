@@ -7,12 +7,12 @@ import { Button } from '@/components/ui/button'
 import { Edit, Trash } from 'lucide-react'
 
 
-const WishItemList = (item) => {
+const WishItem = ({ item }) => {
   return (
     <Card>
       <CardContent className='flex items-center p-4'>
         <img
-          src={item.imageUrl}
+          src='https://thumbs.dreamstime.com/b/birthday-make-wish-theme-elements-vector-eps-illustration-file-51817596.jpg'
           alt={item.title}
           className='w-16 h-16 object-cover rounded mr-4'
         />
@@ -44,4 +44,4 @@ const WishItemList = (item) => {
   )
 }
 
-export default WishItemList
+export default WishItem

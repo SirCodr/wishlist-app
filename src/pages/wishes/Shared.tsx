@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 
-export default function SharedList() {
+export default function SharedPage() {
   const [sharedFilter, setSharedFilter] = React.useState('all')
   const [searchTerm, setSearchTerm] = React.useState('')
 
