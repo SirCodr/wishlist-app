@@ -1,14 +1,5 @@
-import {
-  Gift,
-  TrendingUp,
-  Calendar} from 'lucide-react'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-
+import { Gift, TrendingUp, Calendar } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function HomePage() {
   const wishlists = [
@@ -69,50 +60,46 @@ export default function HomePage() {
   ]
 
   return (
-    <div className='flex flex-col h-screen bg-background'>
-      <main className='flex-1 overflow-auto p-4'>
-        <div className='container mx-auto space-y-6'>
-          <h2 className='text-3xl font-bold'>Dashboard</h2>
+    <>
+      <h2 className='text-3xl font-bold'>Dashboard</h2>
 
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-            <Card>
-              <CardHeader>
-                <CardTitle className='flex items-center'>
-                  <Gift className='mr-2 h-5 w-5' />
-                  Total Wishlists
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className='text-3xl font-bold'>{wishlists.length}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className='flex items-center'>
-                  <TrendingUp className='mr-2 h-5 w-5' />
-                  Completed Wishes
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className='text-3xl font-bold'>
-                  {wishItems.filter((item) => item.completed).length}
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className='flex items-center'>
-                  <Calendar className='mr-2 h-5 w-5' />
-                  Upcoming Events
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className='text-3xl font-bold'>2</p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </main>
-    </div>
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+        <Card>
+          <CardHeader>
+            <CardTitle className='flex items-center'>
+              <Gift className='mr-2 h-5 w-5' />
+              Total Wishlists
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className='text-3xl font-bold'>{wishlists.length}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className='flex items-center'>
+              <TrendingUp className='mr-2 h-5 w-5' />
+              Completed Wishes
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className='text-3xl font-bold'>
+              {wishItems.filter((item) => item.completed).length}
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className='flex items-center'>
+              <Calendar className='mr-2 h-5 w-5' />
+              Upcoming Events
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className='text-3xl font-bold'>2</p>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   )
 }
