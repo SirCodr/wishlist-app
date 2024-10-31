@@ -1,3 +1,5 @@
+import { HttpRequest } from "@/lib/http"
+
 export async function getAllWishes() {
-  return await fetch('http://localhost:3000/wishes').then(res => res.json())
+  return await new HttpRequest().get('wishes').then(res => res.data)
 }

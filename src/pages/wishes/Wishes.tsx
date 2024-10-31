@@ -16,7 +16,7 @@ const WishesPage = () => {
 
   return (
     <>
-      {(wishes.data as Wish[]).map((wish, index) => (
+      {(wishes as Wish[]).map((wish, index) => (
         <WishItem item={wish} key={index} />
       ))}
     </>

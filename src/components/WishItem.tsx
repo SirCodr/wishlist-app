@@ -11,7 +11,6 @@ type Props = {
   item: Wish
 }
 
-
 const WishItem = ({ item }: Props) => {
   return (
     <Card>
