@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Sidebar from './SideBar'
 import TopNavigation from './TopNavigation'
+import BreadNavigation from './BreadNavigation'
 
 const Layout = () => {
   return (
@@ -10,6 +11,7 @@ const Layout = () => {
       <main className='flex-1 overflow-auto p-4'>
         <div className='container mx-auto space-y-6'>
           <TopNavigation />
+          <BreadNavigation />
           <Outlet />
         </div>
       </main>
