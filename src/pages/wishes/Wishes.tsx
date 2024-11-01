@@ -3,10 +3,8 @@ import WishItem from '@/components/WishItem'
 import { getAllWishes } from '@/services/wishes'
 import { Wish } from '@/types/wishes'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
 
 const WishesPage = () => {
-  const { id } = useParams()
   const { data: wishes, isLoading } = useQuery({
     queryKey: ['wishes'],
     queryFn: getAllWishes
