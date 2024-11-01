@@ -6,7 +6,7 @@ export class HttpRequest {
     this.http = axios.create({
       baseURL: import.meta.env.DEV
         ? 'http://localhost:3000/'
-        : 'wishlist-api-production.up.railway.app/',
+        : 'https://wishlist-api-production.up.railway.app/',
       headers: {
         'Content-Type': 'application/json'
       },
