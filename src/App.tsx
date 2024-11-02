@@ -6,14 +6,16 @@ import UserSettings from './pages/UserSettings';
 import MyListPage from './pages/wishes/MyList';
 import WishesPage from './pages/wishes/Wishes';
 import SharedPage from './pages/wishes/Shared';
+import SignInPage from './pages/Sigin';
 
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='/login' element={<SignInPage />} />
         <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
+          <Route index path='dashboard' element={<HomePage />} />
           <Route path='wishlists' element={<MyListPage />} />
           <Route path='wishlists/:id' element={<WishesPage />} />
           <Route path='shared' element={<SharedPage />} />
