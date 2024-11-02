@@ -1,12 +1,16 @@
-import { Menu, Plus } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
 import { useNavigate } from 'react-router-dom'
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import NavContent from './NavContent'
 import { AddWishModal } from '../AddWishModal'
+import useAuthStore from '@/store/auth'
+import { getInitialsFromEmail } from '@/lib/utils'
 
 const TopNavigation = () => {
+  const user = useAuthStore(state => state.user)
+  const userInitials = user?.email ? getInitialsFromEmail(user?.email) : 'NN'
   const navigate = useNavigate()
 
   return (
@@ -33,7 +37,7 @@ const TopNavigation = () => {
           <AddWishModal />
           <Avatar onClick={() => navigate('/user')} className='cursor-pointer'>
             <AvatarImage src='/placeholder.svg' alt='User' />
-            <AvatarFallback>JD</AvatarFallback>
+            <AvatarFallback>{userInitials}</AvatarFallback>
           </Avatar>
         </div>
       </div>
