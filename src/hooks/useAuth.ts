@@ -15,5 +15,10 @@ export default function useAuth() {
     setSession(data.session)
   }
 
-  return { login }
+  async function logout() {
+    setUser(undefined)
+    setSession(undefined)
+  }
+
+  return { login, logout }
 }

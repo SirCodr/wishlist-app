@@ -5,8 +5,8 @@ import { Session, User } from '@supabase/supabase-js';
 interface AuthState {
   user: User | undefined;
   session: Session | undefined;
-  setUser: (user: User) => void;
-  setSession: (session: Session) => void;
+  setUser: (user: User | undefined) => void;
+  setSession: (session: Session | undefined) => void;
 }
 
 const middlewares = (config: StateCreator<AuthState>) => devtools(persist(config, { name: 'authStore' }));

@@ -9,9 +9,11 @@ import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useNavigate } from 'react-router-dom'
+import useAuth from '@/hooks/useAuth'
 
 export default function UserSettings() {
   const navigate = useNavigate()
+  const { logout } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const [activeTab, setActiveTab] = useState("account")
 
@@ -19,6 +21,7 @@ export default function UserSettings() {
     setIsLoading(true)
     try {
       await new Promise(resolve => setTimeout(resolve, 1000))
+      await logout()
       navigate('/login')
     } catch (error) {
       console.error('Logout failed:', error)
