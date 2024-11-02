@@ -19,7 +19,7 @@ const NavContent = () => {
       <Button
         variant={location.pathname === '/my-list' ? 'secondary' : 'ghost'}
         className='w-full justify-start'
-        onClick={() => navigate('/my-list')}
+        onClick={() => navigate('/wishlists')}
       >
         <List className='mr-2 h-4 w-4' />
         My Wishlists

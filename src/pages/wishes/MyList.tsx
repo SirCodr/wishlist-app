@@ -7,63 +7,30 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { getByUser } from '@/services/wishlists'
+import Loader from '@/components/ui/loader'
 
 export default function MyListPage() {
+  const { data: wishlists, isLoading } = useQuery({
+    queryKey: ['wishlists'],
+    queryFn: () => getByUser('250cd40b-4be8-41d1-9477-9b13d3d33ac5')
+  }) 
   const navigate = useNavigate()
 
-  const wishlists = [
-    {
-      id: 1,
-      title: 'Birthday Wishlist',
-      items: 5,
-      shared: false,
-      owner: 'You'
-    },
-    {
-      id: 2,
-      title: 'Christmas Wishlist',
-      items: 8,
-      shared: true,
-      owner: 'Alice Johnson'
-    },
-    {
-      id: 3,
-      title: 'Wedding Registry',
-      items: 12,
-      shared: true,
-      owner: 'Bob Smith'
-    },
-    {
-      id: 4,
-      title: 'Housewarming Wishlist',
-      items: 6,
-      shared: true,
-      owner: 'Charlie Brown'
-    },
-    {
-      id: 5,
-      title: 'Baby Shower Wishlist',
-      items: 15,
-      shared: true,
-      owner: 'Diana Prince'
-    }
-  ]
-
-  useEffect(() => {}, [])
+  if (isLoading) return <Loader />
 
   return (
     <>
       <h2 className='text-3xl font-bold'>Dashboard</h2>
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-        {wishlists
-          .filter((w) => !w.shared)
+        {wishlists && wishlists
           .map((wishlist) => (
             <Card key={wishlist.id}>
               <CardHeader>
-                <CardTitle>{wishlist.title}</CardTitle>
+                <CardTitle>{wishlist.name}</CardTitle>
                 <CardDescription>{wishlist.items} items</CardDescription>
               </CardHeader>
               <CardFooter>
@@ -71,7 +38,7 @@ export default function MyListPage() {
                   variant='outline'
                   size='sm'
                   className='mr-2'
-                  onClick={() => navigate('all')}
+                  onClick={() => navigate(`${wishlist.id}`)}
                 >
                   <Edit className='mr-2 h-4 w-4' /> View
                 </Button>

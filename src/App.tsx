@@ -14,8 +14,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path='my-list' element={<MyListPage />} />
-          <Route path='my-list/:id' element={<WishesPage />} />
+          <Route path='wishlists' element={<MyListPage />} />
+          <Route path='wishlists/:id' element={<WishesPage />} />
           <Route path='shared' element={<SharedPage />} />
           <Route path='user' element={<UserSettings />} />
         </Route>
