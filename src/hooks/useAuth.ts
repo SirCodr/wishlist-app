@@ -1,5 +1,5 @@
 import { UserProps } from '@/types/auth'
-import { login as loginService } from '../services/auth'
+import { login as loginService, logout as logoutService } from '../services/auth'
 import useAuthStore from '@/store/auth'
 
 export default function useAuth() {
@@ -16,6 +16,7 @@ export default function useAuth() {
   }
 
   async function logout() {
+    await logoutService()
     setUser(undefined)
     setSession(undefined)
   }

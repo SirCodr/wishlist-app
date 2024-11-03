@@ -19,7 +19,7 @@ export class HttpRequest {
     return response.data
   }
 
-  async post(url: string, data: unknown) {
+  async post(url: string, data?: unknown) {
     const response = await this.http.post(url, data)
     return response.data
   }
