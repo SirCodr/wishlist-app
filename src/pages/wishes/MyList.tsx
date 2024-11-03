@@ -11,11 +11,13 @@ import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getByUser } from '@/services/wishlists'
 import Loader from '@/components/ui/loader'
+import useAuthStore from '@/store/auth'
 
 export default function MyListPage() {
+  const user = useAuthStore(state => state.user)
   const { data: wishlists, isLoading } = useQuery({
     queryKey: ['wishlists'],
-    queryFn: () => getByUser('250cd40b-4be8-41d1-9477-9b13d3d33ac5')
+    queryFn: () => getByUser(user!.id)
   }) 
   const navigate = useNavigate()
 

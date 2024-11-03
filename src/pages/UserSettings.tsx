@@ -10,12 +10,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useNavigate } from 'react-router-dom'
 import useAuth from '@/hooks/useAuth'
+import useAuthStore from '@/store/auth'
 
 export default function UserSettings() {
-  const navigate = useNavigate()
-  const { logout } = useAuth()
+  const user = useAuthStore(state => state.user)
   const [isLoading, setIsLoading] = useState(false)
   const [activeTab, setActiveTab] = useState("account")
+  const navigate = useNavigate()
+  const { logout } = useAuth()
 
   const handleLogout = async () => {
     setIsLoading(true)
@@ -46,11 +48,11 @@ export default function UserSettings() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" defaultValue="Jane Doe" />
+                <Input id="name" defaultValue='' />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" defaultValue="jane@example.com" />
+                <Input id="email" type="email" defaultValue={user?.email} />
               </div>
               <div className="flex items-center space-x-2">
                 <Switch id="notifications" />
