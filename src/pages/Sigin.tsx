@@ -11,32 +11,27 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, Loader2, Github } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '@/hooks/useAuth'
+import { useMutation } from '@tanstack/react-query'
+import { UserProps } from '@/types/auth'
 
 export default function SignInPage() {
   const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: (user: UserProps) => login(user),
+    onSuccess: () => navigate('/dashboard')
+  })
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
-    setError('')
 
-    try {
-      if (email && password) {
-        await login({ email, password })
-        navigate('/dashboard')
+    if (email && password) {
+        mutate({ email, password })
       } else {
         throw new Error('Please enter both email and password')
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred during sign-in')
-    } finally {
-      setIsLoading(false)
-    }
   }
 
   return (
@@ -81,11 +76,11 @@ export default function SignInPage() {
                   <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
                     <AlertTitle>Error</AlertTitle>
-                    <AlertDescription>{error}</AlertDescription>
+                    <AlertDescription>{error.message || error.name}</AlertDescription>
                   </Alert>
                 )}
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? (
+                <Button type="submit" className="w-full" disabled={isPending}>
+                  {isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Signing In...

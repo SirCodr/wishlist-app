@@ -9,10 +9,16 @@ export default function useAuth() {
   async function login(user: UserProps) {
     const { data, error } = await loginService(user)
 
-    if (error) throw Error(error.message)
+    if (error) {
+      if (error.status === 400) throw {...error, message: 'Invalid credentials'}
+
+      throw error
+    }
 
     setUser(data.user)
     setSession(data.session)
+
+    return data
   }
 
   async function logout() {
