@@ -11,3 +11,7 @@ export async function logout(): Promise<{
 }> {
   return await new HttpRequest().post('auth/logout')
 }
+
+export async function refreshSession(token: string) {
+  return await new HttpRequest().post('auth/refresh-session', { token })
+}
