@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -16,6 +16,10 @@ import useAuthStore from '@/store/auth'
 import { WishList } from '@/types/wishlists'
 import { Spinner } from '@chakra-ui/react'
 import { WishCreateDto } from '@/types/wishes'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { wishCreateSchema } from '@/schema/wishSchema'
+import { toast } from 'sonner'
 
 interface WishFormProps {
   onSubmit: (wish: WishCreateDto) => Promise<void>
@@ -23,17 +27,8 @@ interface WishFormProps {
   isLoading?: boolean
 }
 
-const DEFAULT_WISH_DATA: WishCreateDto = {
-  title: '',
-  description: '',
-  acquired: false,
-  web_url: '',
-  wishlist_id: ''
-}
-
 export function WishForm({
   onSubmit,
-  initialData = DEFAULT_WISH_DATA,
   isLoading
 }: WishFormProps) {
   const user = useAuthStore(state => state.user)
@@ -41,23 +36,20 @@ export function WishForm({
     queryKey: ['user-wishlist'],
     queryFn: () => getByUser(user!.id)
   })
-
-  const [wishData, setWishData] = React.useState<WishCreateDto>({
-    ...initialData,
-    user_id: user?.id
+  const { register, handleSubmit, formState: { errors } } = useForm<WishCreateDto>({
+    resolver: zodResolver(wishCreateSchema),
+    defaultValues: {
+      acquired: false,
+      user_id: user!.id
+    }
   })
+
   const [isFormLoading, setFormLoading] = useState(false)
 
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    const { name, value } = e.target
-    setWishData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-      setFormLoading(true)
+  const _onSubmit: SubmitHandler<WishCreateDto> = (data) => {
+    setFormLoading(true)
     try {
-      e.preventDefault()
-      await onSubmit(wishData)
+      onSubmit(data)
     } catch (error) {
       console.error(error)
     } finally {
@@ -75,18 +67,21 @@ export function WishForm({
     setFormLoading(Boolean(isLoading))
   }, [isLoading])
 
+  useEffect(() => {
+    const _errors = Object.entries(errors)
+    if (_errors.length) toast.error(_errors[0][1].message)
+  }, [errors])
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(_onSubmit)}>
       <div className='grid gap-4 py-4'>
         <div className='grid grid-cols-4 items-center gap-4'>
           <Label htmlFor='title' className='text-right'>
             Title
           </Label>
           <Input
-            id='title'
-            name='title'
-            value={wishData.title}
-            onChange={handleInputChange}
+            {...register('title')}
+            required
             className='col-span-3'
           />
         </div>
@@ -95,10 +90,7 @@ export function WishForm({
             Description
           </Label>
           <Textarea
-            id='description'
-            name='description'
-            value={wishData.description}
-            onChange={handleInputChange}
+           {...register('description')}
             className='col-span-3'
           />
         </div>
@@ -110,9 +102,8 @@ export function WishForm({
             <Spinner />
           ) : (
             <Select
-              onValueChange={(value) =>
-                setWishData((prev) => ({ ...prev, wishlist_id: value }))
-              }
+            {...register('wishlist_id')}
+            required
             >
               <SelectTrigger className='w-[180px]'>
                 <SelectValue placeholder='Select a wishlist' />
@@ -128,10 +119,7 @@ export function WishForm({
             Web Url
           </Label>
           <Input
-            id='web-url'
-            name='web_url'
-            value={wishData.web_url}
-            onChange={handleInputChange}
+          {...register('web_url')}
             className='col-span-3'
           />
         </div>

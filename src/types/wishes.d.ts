@@ -12,6 +12,6 @@ export type WishCreateDto = {
   description: string
   web_url: string
   acquired: boolean
-  user_id?: string
+  user_id: string
   wishlist_id: string
 }
