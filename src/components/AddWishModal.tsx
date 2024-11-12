@@ -1,21 +1,21 @@
 import React from 'react'
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { WishForm, WishData } from './WishForm'
+import { WishForm } from './WishForm'
 import { Plus } from 'lucide-react'
+import { useMutation } from '@tanstack/react-query'
+import { create } from '@/services/wishes'
+import { WishCreateDto } from '@/types/wishes'
 
-interface AddWishModalProps {
-  onWishAdded?: (wish: WishData) => void
-}
-
-export function AddWishModal({ onWishAdded }: AddWishModalProps) {
+export function AddWishModal() {
   const [isOpen, setIsOpen] = React.useState(false)
+  const { mutate, isPending } = useMutation({
+    mutationFn: create,
+    onSuccess: () => setIsOpen(false)
+  })
 
-  const handleWishSubmit = (wishData: WishData) => {
-    if (onWishAdded) {
-      onWishAdded(wishData)
-    }
-    setIsOpen(false)
+  async function handleWishSubmit(wishData: WishCreateDto) {
+    mutate([wishData])
   }
 
   return (
@@ -32,7 +32,7 @@ export function AddWishModal({ onWishAdded }: AddWishModalProps) {
             Create a new wish item. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <WishForm onSubmit={handleWishSubmit} />
+        <WishForm onSubmit={handleWishSubmit} isLoading={isPending} />
       </DialogContent>
     </Dialog>
   )

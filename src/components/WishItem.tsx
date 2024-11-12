@@ -21,11 +21,11 @@ const WishItem = ({ item }: Props) => {
           className='w-16 h-16 object-cover rounded mr-4'
         />
         <div className='flex-1'>
-          <h4 className='text-lg font-semibold'>{item.title}</h4>
+          <h4 className='text-lg font-semibold capitalize'>{item.title}</h4>
           <p className='text-sm text-muted-foreground'>{item.description}</p>
-          {item.url && (
+          {item.web_url && (
             <a
-              href={item.url}
+              href={item.web_url}
               target='_blank'
               rel='noopener noreferrer'
               className='text-xs text-primary hover:underline'
