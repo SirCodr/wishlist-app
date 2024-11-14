@@ -12,7 +12,6 @@ import {
 } from './ui/select'
 import { useQuery } from '@tanstack/react-query'
 import { getByUser } from '@/services/wishlists'
-import useAuthStore from '@/store/auth'
 import { WishList } from '@/types/wishlists'
 import { Spinner } from '@chakra-ui/react'
 import { WishCreateDto } from '@/types/wishes'
@@ -20,6 +19,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { wishCreateSchema } from '@/schema/wishSchema'
 import { toast } from 'sonner'
+import useAuth from '@/hooks/useAuth'
 
 interface WishFormProps {
   onSubmit: (wish: WishCreateDto) => Promise<void>
@@ -31,7 +31,7 @@ export function WishForm({
   onSubmit,
   isLoading
 }: WishFormProps) {
-  const user = useAuthStore(state => state.user)
+  const { user } = useAuth()
   const { data: wishlists, isLoading: isWishlistQuerying } = useQuery({
     queryKey: ['user-wishlist'],
     queryFn: () => getByUser(user!.id)

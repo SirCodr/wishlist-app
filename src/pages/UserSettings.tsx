@@ -10,10 +10,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useNavigate } from 'react-router-dom'
 import useAuth from '@/hooks/useAuth'
-import useAuthStore from '@/store/auth'
 
 export default function UserSettings() {
-  const user = useAuthStore(state => state.user)
+  const { user } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const [activeTab, setActiveTab] = useState("account")
   const navigate = useNavigate()

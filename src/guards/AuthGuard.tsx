@@ -1,38 +1,31 @@
-import { refreshSession } from '@/services/auth';
-import useAuthStore from '@/store/auth';
-import { useEffect } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { toast } from 'sonner';
+import Loader from "@/components/ui/loader";
+import useAuth from "@/hooks/useAuth";
+import { supabase } from "@/supabase";
+import { useEffect, useState } from "react";
+import { Navigate, Outlet } from "react-router-dom";
 
 const AuthGuard = () => {
-  const session = useAuthStore(state => state.session)
-  const setSession = useAuthStore(state => state.setSession)
-  const setUser = useAuthStore(state => state.setUser)
-  const auth = session !== undefined
+  const { setSession, setUser, session } = useAuth()
+  const [isloading, setloading] = useState(true)
 
   useEffect(() => {
-    const checkSession = async () => {
-      if (!auth || !session || !session.expires_at) return
+    const { data: authListener } = supabase.auth.onAuthStateChange((_, session) => {
+      setloading(true)
+      setSession(session ?? undefined);
+      setUser(session?.user ?? undefined)
+      setloading(false)
+    });
 
-      const currentTime = Date.now()
-      const sessionTime = session.expires_at * 1000
-
-      if (currentTime > sessionTime) {
-        const { data, error } = await refreshSession(session.refresh_token)
-        
-        if (error) return toast.error(error.name)
-
-        setSession(data.session)
-        setUser(data.user)
-      }
+    return () => {
+      authListener.subscription.unsubscribe();
     };
+  }, []);
 
-    checkSession();
-  }, [session])
+  if (isloading) return <Loader />
 
-  if (!auth || !session) return <Navigate to="/login" />
+  if (!session) return <Navigate to='/login' />
 
-  return <Outlet />
-}
+  return <Outlet />;
+};
 
-export default AuthGuard
+export default AuthGuard;

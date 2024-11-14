@@ -9,7 +9,8 @@ interface AuthState {
   setSession: (session: Session | undefined) => void;
 }
 
-const middlewares = (config: StateCreator<AuthState>) => devtools(persist(config, { name: 'authStore' }));
+const middlewares = (config: StateCreator<AuthState>) =>
+  devtools(persist(config, { name: 'authStore' }))
 
 const useAuthStore = create<AuthState>()(
   middlewares((set) => ({

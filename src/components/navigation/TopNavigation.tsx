@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import NavContent from './NavContent'
 import { AddWishModal } from '../AddWishModal'
-import useAuthStore from '@/store/auth'
 import { getInitialsFromEmail } from '@/lib/utils'
+import useAuth from '@/hooks/useAuth'
 
 const TopNavigation = () => {
-  const user = useAuthStore(state => state.user)
+  const { user } = useAuth()
   const userInitials = user?.email ? getInitialsFromEmail(user?.email) : 'NN'
   const navigate = useNavigate()
 
