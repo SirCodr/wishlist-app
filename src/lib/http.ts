@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
+import { getAuthTokenFromUser } from './utils';
 export class HttpRequest {
   private http: AxiosInstance
 
@@ -12,6 +13,24 @@ export class HttpRequest {
       },
       
     })
+
+    this.setupInterceptors()
+  }
+
+  setupInterceptors() {
+    this.http.interceptors.request.use(
+      (config) => {
+        if (!config.url?.includes('/login')) {
+          const { access_token, refresh_token } = getAuthTokenFromUser()
+
+          if (access_token) {
+            config.headers.Authorization = `Bearer ${access_token} ${refresh_token}`;
+          }
+        }
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
   }
 
   async get(url: string) {
