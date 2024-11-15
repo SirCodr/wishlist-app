@@ -15,7 +15,7 @@ import { getByUser } from '@/services/wishlists'
 import { WishList } from '@/types/wishlists'
 import { Spinner } from '@chakra-ui/react'
 import { WishCreateDto } from '@/types/wishes'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { wishCreateSchema } from '@/schema/wishSchema'
 import { toast } from 'sonner'
@@ -36,13 +36,14 @@ export function WishForm({
     queryKey: ['user-wishlist'],
     queryFn: () => getByUser(user!.id)
   })
-  const { register, handleSubmit, formState: { errors } } = useForm<WishCreateDto>({
+  const { control, register, handleSubmit, formState: { errors }, watch } = useForm<WishCreateDto>({
     resolver: zodResolver(wishCreateSchema),
     defaultValues: {
       acquired: false,
       user_id: user!.id
     }
   })
+console.log(errors, watch());
 
   const [isFormLoading, setFormLoading] = useState(false)
 
@@ -101,17 +102,24 @@ export function WishForm({
           {isWishlistQuerying ? (
             <Spinner />
           ) : (
-            <Select
-            {...register('wishlist_id')}
-            required
-            >
-              <SelectTrigger className='w-[180px]'>
-                <SelectValue placeholder='Select a wishlist' />
-              </SelectTrigger>
-              <SelectContent>
-                <WishSelectItems wishlists={wishlists || []} />
-              </SelectContent>
-            </Select>
+            <Controller
+                name="wishlist_id"
+                control={control}
+                rules={{ required: 'Please select a wishlist' }}
+                render={({ field }) => (
+                    <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                    >
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Select a wishlist" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <WishSelectItems wishlists={wishlists || []} />
+                        </SelectContent>
+                    </Select>
+                )}
+            />
           )}
         </div>
         <div className='grid grid-cols-4 items-center gap-4'>
