@@ -4,7 +4,7 @@ import {
 } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
-import { Edit, Trash } from 'lucide-react'
+import { Edit, Gift, Trash } from 'lucide-react'
 import { Wish } from '@/types/wishes'
 
 type Props = {
@@ -15,11 +15,18 @@ const WishItem = ({ item }: Props) => {
   return (
     <Card>
       <CardContent className='flex items-center p-4'>
-        <img
-          src='https://thumbs.dreamstime.com/b/birthday-make-wish-theme-elements-vector-eps-illustration-file-51817596.jpg'
-          alt={item.title}
-          className='w-16 h-16 object-cover rounded mr-4'
-        />
+        {item.web_url ? (
+          <img
+            src={item.web_url}
+            alt={item.title}
+            className='w-16 h-16 object-cover rounded mr-4'
+          />
+        ) : (
+          <Gift
+            className='text-muted-foreground mr-2'
+            style={{ width: 30, height: 30 }}
+          />
+        )}
         <div className='flex-1'>
           <h4 className='text-lg font-semibold capitalize'>{item.title}</h4>
           <p className='text-sm text-muted-foreground'>{item.description}</p>
