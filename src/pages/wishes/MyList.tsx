@@ -12,6 +12,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getByUser } from '@/services/wishlists'
 import Loader from '@/components/ui/loader'
 import useAuth from '@/hooks/useAuth'
+import { AddWishlistModal } from '@/components/AddWishlistModal'
 
 export default function MyListPage() {
   const { user } = useAuth()
@@ -25,14 +26,17 @@ export default function MyListPage() {
 
   return (
     <>
-      <h2 className='text-3xl font-bold'>Dashboard</h2>
+      <div className='w-full flex justify-between'>
+        <h2 className='text-3xl font-bold'>Dashboard</h2>
+        <AddWishlistModal />
+      </div>
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
         {wishlists && wishlists
           .map((wishlist) => (
             <Card key={wishlist.id}>
               <CardHeader>
-                <CardTitle>{wishlist.name}</CardTitle>
+                <CardTitle className='capitalize'>{wishlist.name}</CardTitle>
                 <CardDescription>{wishlist.items} items</CardDescription>
               </CardHeader>
               <CardFooter>

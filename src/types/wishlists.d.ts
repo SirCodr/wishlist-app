@@ -4,3 +4,9 @@ export type WishList = {
   items: number
   description: string
 }
+
+export type WishlistCreateDto = {
+  name: string
+  description: string
+  user_id: string
+}

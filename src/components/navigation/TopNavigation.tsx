@@ -34,7 +34,6 @@ const TopNavigation = () => {
           <h1 className='text-2xl font-bold'>WishList</h1>
         </div>
         <div className='flex items-center space-x-4'>
-          <AddWishModal />
           <Avatar onClick={() => navigate('/user')} className='cursor-pointer'>
             <AvatarImage src='/placeholder.svg' alt='User' />
             <AvatarFallback>{userInitials}</AvatarFallback>
