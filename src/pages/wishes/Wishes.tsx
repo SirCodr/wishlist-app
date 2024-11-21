@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom'
 
 const WishesPage = () => {
   const { id = '' } = useParams()
-  const { data: wishes, isLoading } = useQuery({
+  const { data: wishes, isLoading, refetch } = useQuery({
     queryKey: ['wishes'],
     queryFn: async() => getByWishlist(id)
   })
@@ -19,7 +19,7 @@ const WishesPage = () => {
     <>
       <div className='w-full flex justify-between'>
         <h2 className='text-3xl font-bold'>Wishes</h2>
-        <AddWishModal wishlist_id={id} />
+        <AddWishModal wishlist_id={id} onSubmit={refetch} />
       </div>
       {(wishes as Wish[]).map((wish, index) => (
         <WishItem item={wish} key={index} />

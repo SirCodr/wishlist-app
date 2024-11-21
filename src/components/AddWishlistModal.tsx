@@ -8,12 +8,19 @@ import { WishlistForm } from './WishlistForm'
 import { WishlistCreateDto } from '@/types/wishlists'
 import useAuth from '@/hooks/useAuth'
 
-export function AddWishlistModal() {
+type Props = {
+  onSubmit?: () => void
+}
+
+export function AddWishlistModal(props: Props) {
   const { user } = useAuth()
   const [isOpen, setIsOpen] = React.useState(false)
   const { mutate, isPending } = useMutation({
     mutationFn: create,
-    onSuccess: () => setIsOpen(false)
+    onSuccess: () => {
+      if (props.onSubmit) props.onSubmit()
+      setIsOpen(false)
+    }
   })
 
   async function handleWishSubmit(wishData: WishlistCreateDto) {

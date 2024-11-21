@@ -16,7 +16,7 @@ import { AddWishlistModal } from '@/components/AddWishlistModal'
 
 export default function MyListPage() {
   const { user } = useAuth()
-  const { data: wishlists, isLoading } = useQuery({
+  const { data: wishlists, isLoading, refetch } = useQuery({
     queryKey: ['wishlists'],
     queryFn: () => getByUser(user!.id)
   }) 
@@ -28,7 +28,7 @@ export default function MyListPage() {
     <>
       <div className='w-full flex justify-between'>
         <h2 className='text-3xl font-bold'>Dashboard</h2>
-        <AddWishlistModal />
+        <AddWishlistModal onSubmit={refetch} />
       </div>
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
