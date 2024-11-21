@@ -4,7 +4,6 @@ import { Button } from '../ui/button'
 import { useNavigate } from 'react-router-dom'
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import NavContent from './NavContent'
-import { AddWishModal } from '../AddWishModal'
 import { getInitialsFromEmail } from '@/lib/utils'
 import useAuth from '@/hooks/useAuth'
 

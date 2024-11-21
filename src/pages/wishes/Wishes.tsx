@@ -1,3 +1,4 @@
+import { AddWishModal } from '@/components/AddWishModal'
 import Loader from '@/components/ui/loader'
 import WishItem from '@/components/WishItem'
 import { getByWishlist } from '@/services/wishes'
@@ -16,6 +17,10 @@ const WishesPage = () => {
 
   return (
     <>
+      <div className='w-full flex justify-between'>
+        <h2 className='text-3xl font-bold'>Wishes</h2>
+        <AddWishModal wishlist_id={id} />
+      </div>
       {(wishes as Wish[]).map((wish, index) => (
         <WishItem item={wish} key={index} />
       ))}

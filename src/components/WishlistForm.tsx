@@ -9,24 +9,21 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { wishlistCreateSchema } from '@/schema/wishlistSchema'
 import { toast } from 'sonner'
-import useAuth from '@/hooks/useAuth'
 
 interface WishlistFormProps {
   onSubmit: (wish: WishlistCreateDto) => Promise<void>
-  initialData?: WishlistCreateDto,
+  initialData?: Partial<WishlistCreateDto>,
   isLoading?: boolean
 }
 
 export function WishlistForm({
   onSubmit,
-  isLoading
+  isLoading,
+  initialData
 }: WishlistFormProps) {
-  const { user } = useAuth()
   const { register, handleSubmit, formState: { errors } } = useForm<WishlistCreateDto>({
     resolver: zodResolver(wishlistCreateSchema),
-    defaultValues: {
-      user_id: user!.id
-    }
+    defaultValues: initialData
   })
 
   const [isFormLoading, setFormLoading] = useState(false)

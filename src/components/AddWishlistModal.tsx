@@ -6,8 +6,10 @@ import { useMutation } from '@tanstack/react-query'
 import { create } from '@/services/wishlists'
 import { WishlistForm } from './WishlistForm'
 import { WishlistCreateDto } from '@/types/wishlists'
+import useAuth from '@/hooks/useAuth'
 
 export function AddWishlistModal() {
+  const { user } = useAuth()
   const [isOpen, setIsOpen] = React.useState(false)
   const { mutate, isPending } = useMutation({
     mutationFn: create,
@@ -32,7 +34,7 @@ export function AddWishlistModal() {
             Create a new wishlist. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <WishlistForm onSubmit={handleWishSubmit} isLoading={isPending} />
+        <WishlistForm onSubmit={handleWishSubmit} isLoading={isPending} initialData={{ user_id: user!.id }} />
       </DialogContent>
     </Dialog>
   )

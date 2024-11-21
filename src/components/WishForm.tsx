@@ -23,27 +23,24 @@ import useAuth from '@/hooks/useAuth'
 
 interface WishFormProps {
   onSubmit: (wish: WishCreateDto) => Promise<void>
-  initialData?: WishCreateDto,
+  initialData?: Partial<WishCreateDto>,
   isLoading?: boolean
 }
 
 export function WishForm({
   onSubmit,
-  isLoading
+  isLoading,
+  initialData
 }: WishFormProps) {
   const { user } = useAuth()
   const { data: wishlists, isLoading: isWishlistQuerying } = useQuery({
     queryKey: ['user-wishlist'],
     queryFn: () => getByUser(user!.id)
   })
-  const { control, register, handleSubmit, formState: { errors }, watch } = useForm<WishCreateDto>({
+  const { control, register, handleSubmit, formState: { errors } } = useForm<WishCreateDto>({
     resolver: zodResolver(wishCreateSchema),
-    defaultValues: {
-      acquired: false,
-      user_id: user!.id
-    }
+    defaultValues: initialData
   })
-console.log(errors, watch());
 
   const [isFormLoading, setFormLoading] = useState(false)
 

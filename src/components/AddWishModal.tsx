@@ -6,8 +6,14 @@ import { Plus } from 'lucide-react'
 import { useMutation } from '@tanstack/react-query'
 import { create } from '@/services/wishes'
 import { WishCreateDto } from '@/types/wishes'
+import useAuth from '@/hooks/useAuth'
 
-export function AddWishModal() {
+type Props = {
+  wishlist_id?: string
+}
+
+export function AddWishModal({ wishlist_id }: Props) {
+  const { user } = useAuth()
   const [isOpen, setIsOpen] = React.useState(false)
   const { mutate, isPending } = useMutation({
     mutationFn: create,
@@ -32,7 +38,7 @@ export function AddWishModal() {
             Create a new wish item. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <WishForm onSubmit={handleWishSubmit} isLoading={isPending} />
+        <WishForm onSubmit={handleWishSubmit} isLoading={isPending} initialData={{ acquired: false, user_id: user!.id, wishlist_id }} />
       </DialogContent>
     </Dialog>
   )
