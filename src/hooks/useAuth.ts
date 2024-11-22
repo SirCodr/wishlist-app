@@ -21,8 +21,12 @@ export default function useAuth() {
   }
 
   async function loginWitProvider(provider: Provider) {
+    const redirectTo = process.env.REACT_APP_REDIRECT_URL || 'http://localhost:3000';
     const { error } = await supabase.auth.signInWithOAuth({
-      provider
+      provider,
+      options: {
+        redirectTo
+      }
     })
 
     if (error) throw error
