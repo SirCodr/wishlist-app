@@ -20,17 +20,20 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { wishCreateSchema } from '@/schema/wishSchema'
 import { toast } from 'sonner'
 import useAuth from '@/hooks/useAuth'
+import { Switch } from './ui/switch'
 
 interface WishFormProps {
   onSubmit: (wish: WishCreateDto) => Promise<void>
   initialData?: Partial<WishCreateDto>,
   isLoading?: boolean
+  editMode?: boolean
 }
 
 export function WishForm({
   onSubmit,
   isLoading,
-  initialData
+  initialData,
+  editMode
 }: WishFormProps) {
   const { user } = useAuth()
   const { data: wishlists, isLoading: isWishlistQuerying } = useQuery({
@@ -119,6 +122,26 @@ export function WishForm({
             />
           )}
         </div>
+        {
+          editMode && (
+            <div className='grid grid-cols-4 items-center gap-4'>
+              <Label htmlFor='acquired' className='text-right'>
+                Acquired
+              </Label>
+              <Controller
+                name="acquired"
+                control={control}
+                render={({ field }) => (
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    className='col-span-3'
+                />
+                )}
+              />
+            </div>
+          )
+        }
         <div className='grid grid-cols-4 items-center gap-4'>
           <Label htmlFor='web-url' className='text-right'>
             Web Url
@@ -133,11 +156,11 @@ export function WishForm({
         <Button type='submit' disabled={isWishlistQuerying || isFormLoading}>
           {isFormLoading ? (
             <div className='flex items-center gap-x-2'>
-              <span>Saving</span>
+              <span>{editMode ? 'Updating' : 'Saving'}</span>
               <Spinner size='xs' />
             </div>
           ) : (
-            'Save wish'
+            editMode ? 'Update' : 'Save'
           )}
         </Button>
       </div>

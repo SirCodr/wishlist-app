@@ -42,4 +42,14 @@ export class HttpRequest {
     const response = await this.http.post(url, data)
     return response.data
   }
+
+  async put(url: string, data: unknown) {
+    const response = await this.http.put(url, data)
+    return response.data
+  }
+
+  async delete(url: string, data: unknown) {
+    const response = await this.http.delete(url, { data })
+    return response.data
+  }
 }

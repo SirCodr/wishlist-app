@@ -2,16 +2,42 @@ import {
   Card,
   CardContent
 } from '@/components/ui/card'
-import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
-import { Edit, Gift, Trash } from 'lucide-react'
+import { Gift, Share2, Trash } from 'lucide-react'
 import { Wish } from '@/types/wishes'
+import { EditWishModal } from './EditWishModal'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { useMutation } from '@tanstack/react-query'
+import { remove } from '@/services/wishes'
+import { Skeleton } from './ui/skeleton'
 
 type Props = {
   item: Wish
+  wishlist_id?: string
 }
 
-const WishItem = ({ item }: Props) => {
+type DeleteButtonProps = {
+  id: string
+  onSubmit: (id: string) => void
+}
+
+const WishItem = ({ item, wishlist_id }: Props) => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: remove
+  })
+
+  if (isPending) return <Skeleton className="h-20 w-full" />
+
   return (
     <Card>
       <CardContent className='flex items-center p-4'>
@@ -42,16 +68,41 @@ const WishItem = ({ item }: Props) => {
           )}
         </div>
         <div className='flex items-center space-x-2'>
-          <Switch checked={item.acquired} />
+          <EditWishModal wish={item} wishlist_id={wishlist_id} />
           <Button variant='outline' size='sm'>
-            <Edit className='h-4 w-4' />
+            <Share2 className='h-4 w-4' />
           </Button>
-          <Button variant='outline' size='sm'>
-            <Trash className='h-4 w-4' />
-          </Button>
+          <DeleteButton id={item.id} onSubmit={mutate} />
         </div>
       </CardContent>
     </Card>
+  )
+}
+
+const DeleteButton = (props: DeleteButtonProps) => {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant='outline' size='sm'>
+          <Trash className='h-4 w-4' />
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Confirm delete</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your
+            record.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={() => props.onSubmit(props.id)}>
+            Confirm
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
 
