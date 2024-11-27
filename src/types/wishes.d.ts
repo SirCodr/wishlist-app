@@ -3,6 +3,7 @@ export type Wish = {
   title: string
   description: string
   web_url: string
+  image_url: string
   acquired: boolean
   user_id?: string
 }

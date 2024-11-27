@@ -17,7 +17,7 @@ const WishItem = ({ item }: Props) => {
       <CardContent className='flex items-center p-4'>
         {item.web_url ? (
           <img
-            src={item.web_url}
+            src={item.image_url}
             alt={item.title}
             className='w-16 h-16 object-cover rounded mr-4'
           />
