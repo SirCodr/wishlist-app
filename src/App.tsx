@@ -3,9 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/navigation/Layout'
 import HomePage from './pages/Home'
 import UserSettings from './pages/UserSettings'
-import MyListPage from './pages/wishes/MyList'
-import WishesPage from './pages/wishes/Wishes'
-import SharedPage from './pages/wishes/Shared'
+import MyWishlists from './pages/my-wishlists/MyWishlists'
+import WishesPage from './pages/my-wishlists/Wishes'
+import SharedWishlistsPage from './pages/SharedWishlists'
 import SignInPage from './pages/Sigin'
 import AuthGuard from './guards/AuthGuard'
 
@@ -18,9 +18,9 @@ function App() {
           <Route path='/' element={<Layout />}>
             <Route index element={<Navigate to="/dashboard" />} />
             <Route path='dashboard' element={<HomePage />} />
-            <Route path='wishlists' element={<MyListPage />} />
+            <Route path='wishlists' element={<MyWishlists />} />
             <Route path='wishlists/:id' element={<WishesPage />} />
-            <Route path='shared' element={<SharedPage />} />
+            <Route path='shared' element={<SharedWishlistsPage />} />
             <Route path='user' element={<UserSettings />} />
           </Route>
         </Route>
