@@ -22,7 +22,7 @@ const WishesPage = () => {
         <AddWishModal wishlist_id={id} onSubmit={refetch} />
       </div>
       {(wishes as Wish[]).map((wish, index) => (
-        <WishItem item={wish} key={index} wishlist_id={id} />
+        <WishItem item={wish} key={index} wishlist_id={id} onEdit={refetch} onDelete={refetch} />
       ))}
     </>
   )

@@ -43,13 +43,13 @@ export class HttpRequest {
     return response.data
   }
 
-  async put(url: string, data: unknown) {
-    const response = await this.http.put(url, data)
+  async patch(url: string, data: unknown) {
+    const response = await this.http.patch(url, data)
     return response.data
   }
 
-  async delete(url: string, data: unknown) {
-    const response = await this.http.delete(url, { data })
+  async delete(url: string) {
+    const response = await this.http.delete(url)
     return response.data
   }
 }

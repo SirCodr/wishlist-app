@@ -18,7 +18,7 @@ export function EditWishModal(props: Props) {
   const { user } = useAuth()
   const [isOpen, setIsOpen] = React.useState(false)
   const { mutate, isPending } = useMutation({
-    mutationFn: update,
+    mutationFn: (wish: Partial<Wish>) => update(wish),
     onSuccess: () => {
       if (props.onSubmit) props.onSubmit()
       setIsOpen(false)
@@ -26,7 +26,13 @@ export function EditWishModal(props: Props) {
   })
 
   async function handleWishSubmit(wishData: Partial<WishCreateDto>) {
-    mutate([wishData])
+    const newWishData = { ...wishData };
+    delete newWishData.wishlist_id;
+
+    mutate({
+      ...newWishData,
+      id: props.wish.id
+    })
   }
 
   return (

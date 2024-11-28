@@ -23,7 +23,9 @@ import { Skeleton } from './ui/skeleton'
 
 type Props = {
   item: Wish
-  wishlist_id?: string
+  wishlist_id?: string,
+  onEdit?: () => void,
+  onDelete?: () => void,
 }
 
 type DeleteButtonProps = {
@@ -31,9 +33,10 @@ type DeleteButtonProps = {
   onSubmit: (id: string) => void
 }
 
-const WishItem = ({ item, wishlist_id }: Props) => {
+const WishItem = ({ item, wishlist_id, onEdit = () => {}, onDelete = () => {} }: Props) => {
   const { mutate, isPending } = useMutation({
-    mutationFn: remove
+    mutationFn: remove,
+    onSuccess: () => onDelete()
   })
 
   if (isPending) return <Skeleton className="h-20 w-full" />
@@ -68,7 +71,7 @@ const WishItem = ({ item, wishlist_id }: Props) => {
           )}
         </div>
         <div className='flex items-center space-x-2'>
-          <EditWishModal wish={item} wishlist_id={wishlist_id} />
+          <EditWishModal wish={item} wishlist_id={wishlist_id} onSubmit={onEdit} />
           <Button variant='outline' size='sm'>
             <Share2 className='h-4 w-4' />
           </Button>
