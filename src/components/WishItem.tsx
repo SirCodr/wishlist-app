@@ -72,10 +72,10 @@ const WishItem = ({ item, wishlist_id, onEdit = () => {}, onDelete = () => {} }:
         </div>
         <div className='flex items-center space-x-2'>
           <EditWishModal wish={item} wishlist_id={wishlist_id} onSubmit={onEdit} />
-          <Button variant='outline' size='sm'>
+          <DeleteButton id={item.id} onSubmit={mutate} />
+          <Button variant='outline' size='sm' disabled>
             <Share2 className='h-4 w-4' />
           </Button>
-          <DeleteButton id={item.id} onSubmit={mutate} />
         </div>
       </CardContent>
     </Card>

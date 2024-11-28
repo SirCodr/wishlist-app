@@ -12,6 +12,7 @@ const NavContent = () => {
         variant={location.pathname === '/' ? 'secondary' : 'ghost'}
         className='w-full justify-start'
         onClick={() => navigate('/dashboard')}
+        disabled
       >
         <Home className='mr-2 h-4 w-4' />
         Dashboard
@@ -28,6 +29,7 @@ const NavContent = () => {
         variant={location.pathname === '/shared' ? 'secondary' : 'ghost'}
         className='w-full justify-start'
         onClick={() => navigate('/shared')}
+        disabled
       >
         <Share2 className='mr-2 h-4 w-4' />
         Shared Wishlists
