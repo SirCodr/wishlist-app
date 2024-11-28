@@ -16,7 +16,7 @@ function App() {
         <Route path='/login' element={<SignInPage />} />
         <Route element={<AuthGuard />}>
           <Route path='/' element={<Layout />}>
-            <Route index element={<Navigate to="/dashboard" />} />
+            <Route index element={<Navigate to="/wishlists" />} />
             <Route path='dashboard' element={<HomePage />} />
             <Route path='wishlists' element={<MyWishlists />} />
             <Route path='wishlists/:id' element={<WishesPage />} />
