@@ -8,3 +8,7 @@ export async function getByUser(id: string): Promise<WishList[]> {
 export async function create(wishlists: WishlistCreateDto[]) {
   return await new HttpRequest().post('wishlists', wishlists)
 }
+
+export async function share(id: string, emails: string[]) {
+  return await new HttpRequest().post(`wishlists/share/${id}`, emails)
+}

@@ -3,6 +3,7 @@ export type WishList = {
   name: string
   items: number
   description: string
+  is_shared: boolean
 }
 
 export type WishlistCreateDto = {
