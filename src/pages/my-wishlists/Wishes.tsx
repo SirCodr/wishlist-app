@@ -3,7 +3,6 @@ import EmptyDataCard from '@/components/ui/empty-data-card'
 import Loader from '@/components/ui/loader'
 import WishItem from '@/components/WishItem'
 import { getByWishlist } from '@/services/wishes'
-import { Wish } from '@/types/wishes'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 
