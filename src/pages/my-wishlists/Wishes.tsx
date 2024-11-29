@@ -1,4 +1,5 @@
 import { AddWishModal } from '@/components/AddWishModal'
+import EmptyDataCard from '@/components/ui/empty-data-card'
 import Loader from '@/components/ui/loader'
 import WishItem from '@/components/WishItem'
 import { getByWishlist } from '@/services/wishes'
@@ -13,15 +14,30 @@ const WishesPage = () => {
     queryFn: async() => getByWishlist(id)
   })
 
-  if (isLoading) return <Loader />
-
   return (
     <>
-      <div className='w-full flex justify-between'>
+      <div className='w-full flex justify-between pb-6'>
         <h2 className='text-3xl font-bold'>Wishes</h2>
-        <AddWishModal wishlist_id={id} onSubmit={refetch} />
+        {!isLoading && wishes && wishes.length > 0 && (
+          <AddWishModal wishlist_id={id} onSubmit={refetch} />
+        )}
       </div>
-      {(wishes as Wish[]).map((wish, index) => (
+
+      {isLoading && (
+        <div className='w-full h-full'>
+          <Loader />
+        </div>
+      )}
+
+      {!isLoading && !wishes?.length && (
+        <section className='flex flex-col items-center justify-center w-full h-[calc(100%-24px)] overflow-auto'>
+          <EmptyDataCard
+            chidlren={<AddWishModal wishlist_id={id} onSubmit={refetch} />}
+          />
+        </section>
+      )}
+
+      {!isLoading && wishes && wishes.map((wish, index) => (
         <WishItem item={wish} key={index} wishlist_id={id} onEdit={refetch} onDelete={refetch} />
       ))}
     </>

@@ -36,7 +36,7 @@ export function AddWishlistModal(props: Props) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add New Wish</DialogTitle>
+          <DialogTitle>Add New Wishlist</DialogTitle>
           <DialogDescription>
             Create a new wishlist. Click save when you're done.
           </DialogDescription>

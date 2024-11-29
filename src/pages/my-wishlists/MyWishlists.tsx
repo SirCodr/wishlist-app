@@ -13,6 +13,7 @@ import { getByUser } from '@/services/wishlists'
 import Loader from '@/components/ui/loader'
 import useAuth from '@/hooks/useAuth'
 import { AddWishlistModal } from '@/components/AddWishlistModal'
+import EmptyDataCard from '@/components/ui/empty-data-card'
 
 export default function MyWishlistsPage() {
   const { user } = useAuth()
@@ -22,18 +23,30 @@ export default function MyWishlistsPage() {
   }) 
   const navigate = useNavigate()
 
-  if (isLoading) return <Loader />
-
   return (
     <>
-      <div className='w-full flex justify-between'>
+      <div className='w-full flex justify-between pb-6'>
         <h2 className='text-3xl font-bold'>My wishlists</h2>
-        <AddWishlistModal onSubmit={refetch} />
+        {wishlists && wishlists.length > 0 && <AddWishlistModal onSubmit={refetch} />}
       </div>
 
+      {
+        isLoading && (
+          <div className='w-full h-full'>
+            <Loader />
+          </div>
+        )
+      }
+
+      {!isLoading && !wishlists?.length && (
+          <section className='flex flex-col items-center justify-center w-full h-full'>
+            <EmptyDataCard chidlren={<AddWishlistModal onSubmit={refetch} />} />
+          </section>
+      )}
+
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-        {wishlists && wishlists
-          .map((wishlist) => (
+        {!isLoading && wishlists &&
+          wishlists.map((wishlist) => (
             <Card key={wishlist.id}>
               <CardHeader>
                 <CardTitle className='capitalize'>{wishlist.name}</CardTitle>

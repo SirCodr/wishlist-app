@@ -6,12 +6,11 @@ const Layout = () => {
   return (
     <div className='flex w-screen h-screen bg-background'>
       <Sidebar />
-
-      <main className='flex-1 overflow-auto p-4'>
-        <div className='container mx-auto space-y-6'>
+      <main className='grid grid-rows-[auto_1fr] flex-1 h-full overflow-auto p-4'>
           <TopNavigation />
-          <Outlet />
-        </div>
+          <div className='py-6'>
+            <Outlet />
+          </div>
       </main>
     </div>
   )
