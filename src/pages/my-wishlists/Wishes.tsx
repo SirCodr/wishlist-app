@@ -36,9 +36,20 @@ const WishesPage = () => {
         </section>
       )}
 
-      {!isLoading && wishes && wishes.map((wish, index) => (
-        <WishItem item={wish} key={index} wishlist_id={id} onEdit={refetch} onDelete={refetch} />
-      ))}
+      {!isLoading && wishes && (
+        <section className='flex flex-wrap gap-8 w-full p-4'>
+          {wishes.map((wish) => (
+            <div key={wish.id} className='max-w-80'>
+              <WishItem
+                item={wish}
+                wishlist_id={id}
+                onEdit={refetch}
+                onDelete={refetch}
+              />
+            </div>
+          ))}
+        </section>
+      )}
     </>
   )
 }

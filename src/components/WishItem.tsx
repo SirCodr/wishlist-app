@@ -1,9 +1,11 @@
 import {
-  Card,
-  CardContent
+  Card, CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Gift, Share2, Trash } from 'lucide-react'
+import { Trash } from 'lucide-react'
 import { Wish } from '@/types/wishes'
 import { EditWishModal } from './EditWishModal'
 import {
@@ -42,43 +44,41 @@ const WishItem = ({ item, wishlist_id, onEdit = () => {}, onDelete = () => {} }:
   if (isPending) return <Skeleton className="h-20 w-full" />
 
   return (
-    <Card>
-      <CardContent className='flex items-center p-4'>
-        {item.web_url ? (
+    <>
+      <Card className="overflow-hidden">
+      {item.web_url && (
+        <div className="relative aspect-[16/9] overflow-hidden">
           <img
             src={item.image_url}
-            alt={item.title}
-            className='w-16 h-16 object-cover rounded mr-4'
+            alt={`Preview of ${item.title}`}
+            className="object-cover"
           />
-        ) : (
-          <Gift
-            className='text-muted-foreground mr-2'
-            style={{ width: 30, height: 30 }}
-          />
-        )}
-        <div className='flex-1'>
-          <h4 className='text-lg font-semibold capitalize'>{item.title}</h4>
-          <p className='text-sm text-muted-foreground'>{item.description}</p>
+        </div>
+      )}
+      <CardHeader>
+        <div className="flex items-start justify-between">
+          <div className="space-y-1">
+            <CardTitle className="capitalize">{item.title}</CardTitle>
+            <CardDescription>{item.description}</CardDescription>
+          </div>
           {item.web_url && (
             <a
-              href={item.web_url}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='text-xs text-primary hover:underline'
-            >
-              View Website
-            </a>
+          href={item.web_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-1.5 px-1.5 py-1 text-xs font-medium text-white bg-primary rounded-md shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          Visit web
+        </a>
           )}
         </div>
-        <div className='flex items-center space-x-2'>
-          <EditWishModal wish={item} wishlist_id={wishlist_id} onSubmit={onEdit} />
-          <DeleteButton id={item.id} onSubmit={mutate} />
-          <Button variant='outline' size='sm' disabled>
-            <Share2 className='h-4 w-4' />
-          </Button>
-        </div>
-      </CardContent>
+      </CardHeader>
+      <CardFooter className='gap-x-2'>
+        <EditWishModal wish={item} wishlist_id={wishlist_id} onSubmit={onEdit} />
+        <DeleteButton id={item.id} onSubmit={mutate} />
+      </CardFooter>
     </Card>
+    </>
   )
 }
 
