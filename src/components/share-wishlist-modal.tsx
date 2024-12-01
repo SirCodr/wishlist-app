@@ -11,8 +11,9 @@ import { Share2 } from 'lucide-react'
 import { DialogTrigger } from "@radix-ui/react-dialog"
 import ShareWishlistForm from "./share-wishlist-form"
 import { WishList } from "@/types/wishlists"
-import { useMutation } from "@tanstack/react-query"
-import { share } from "@/services/wishlists"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { getSharedEmails, share } from "@/services/wishlists"
+import { Spinner } from "@chakra-ui/react"
 
 interface ShareWishlistModalProps {
   onSubmit?: () => void
@@ -27,6 +28,11 @@ export function ShareWishlistModal({ wishlist, onSubmit }: ShareWishlistModalPro
 
       setIsOpen(false)
     }
+  })
+  const { data: emailsShared, isLoading } = useQuery({
+    queryKey: [`wishlist-shared-${wishlist.id}-emails`],
+    queryFn: () => getSharedEmails(wishlist.id),
+    enabled: Boolean(wishlist.is_shared)
   })
   const [isOpen, setIsOpen] = useState(false)
 
@@ -48,7 +54,8 @@ export function ShareWishlistModal({ wishlist, onSubmit }: ShareWishlistModalPro
             Add emails of people you want to share <b>"{wishlist.name}"</b> with.
           </DialogDescription>
         </DialogHeader>
-        <ShareWishlistForm onSubmit={handleShare} />
+        {!isLoading && <ShareWishlistForm initialData={emailsShared ?? []} onSubmit={handleShare} />}
+        {isLoading && <Spinner />}
       </DialogContent>
     </Dialog>
   )

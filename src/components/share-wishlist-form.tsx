@@ -4,6 +4,7 @@ import { Checkbox } from './ui/checkbox'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { FormEvent, useState } from 'react'
+import useAuth from '@/hooks/useAuth'
 
 type Props = {
   onSubmit: (emails: string[]) => void,
@@ -12,14 +13,31 @@ type Props = {
 }
 
 export default function ShareWishlistForm({ onSubmit, editMode, initialData = [] }: Props) {
+  const { user } = useAuth()
   const [email, setEmail] = useState('')
   const [emails, setEmails] = useState<string[]>(initialData)
+  const [error, setError] = useState('')
 
   const handleAddEmail = (e: FormEvent) => {
-    e.preventDefault()
-    if (email && !emails.includes(email)) {
-      setEmails([...emails, email])
-      setEmail('')
+    try {
+      e.preventDefault()
+
+      const hasOwnEmail = email.toLowerCase() === user!.email!.toLowerCase()
+
+      if (hasOwnEmail) throw Error('Own email can not be added')
+
+      if (email && !emails.includes(email)) {
+        setEmails([...emails, email])
+        setEmail('')
+        setError('')
+      }
+    } catch (error) {
+      console.error(error)
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
     }
   }
 
@@ -54,6 +72,7 @@ export default function ShareWishlistForm({ onSubmit, editMode, initialData = []
         </div>
         <div className='min-h-[100px] max-h-[200px] overflow-y-auto'>
           <EmailList emails={emails} onRemove={handleRemoveEmail} />
+          {error && <div className='text-center text-sm text-red-500'>Error: {error}</div>}
         </div>
       </form>
       <Button onClick={() => onSubmit(emails)} className='w-full sm:w-auto' disabled={!emails.length}>
