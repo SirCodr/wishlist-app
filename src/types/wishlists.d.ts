@@ -10,6 +10,7 @@ export type SharedWishList = {
   id: string
   name: string
   items: number
+  owner: string
   description: string
 }
 

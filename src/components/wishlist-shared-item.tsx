@@ -8,7 +8,8 @@ import {
 import { SharedWishList } from '@/types/wishlists'
 import { useNavigate } from 'react-router-dom'
 import { Button } from './ui/button'
-import { Edit } from 'lucide-react'
+import { Edit, Users } from 'lucide-react'
+import { Badge } from './ui/badge'
 
 type Props = {
   wishlist: SharedWishList
@@ -26,10 +27,10 @@ export default function WishlistSharedItem({ wishlist }: Props) {
             <CardDescription>{wishlist.items} items</CardDescription>
           </div>
           {
-            // <Badge variant="secondary" className="flex items-center gap-1">
-            //   <Users className="h-3 w-3" />
-            //   NOmbre de quien comparte
-            // </Badge>
+            <Badge variant="secondary" className="flex items-center gap-1">
+              <Users className="h-3 w-3" />
+              {wishlist.owner}
+            </Badge>
           }
         </div>
       </CardHeader>
