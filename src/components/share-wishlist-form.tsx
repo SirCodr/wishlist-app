@@ -1,6 +1,5 @@
 import { Plus, X } from 'lucide-react'
 import { Button } from './ui/button'
-import { Checkbox } from './ui/checkbox'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { FormEvent, useState } from 'react'
@@ -46,8 +45,8 @@ export default function ShareWishlistForm({ onSubmit, editMode, initialData = []
   }
 
   return (
-    <div className='grid gap-4 py-4'>
-      <form className='grid gap-4 py-4' onSubmit={handleAddEmail}>
+    <div className='grid gap-4'>
+      <form className='grid gap-4' onSubmit={handleAddEmail}>
         <div className='flex items-end gap-2'>
           <div className='flex-1'>
             <Label htmlFor='email' className='text-sm font-medium'>
@@ -70,8 +69,8 @@ export default function ShareWishlistForm({ onSubmit, editMode, initialData = []
             <Plus className='h-4 w-4' />
           </Button>
         </div>
-        <div className='min-h-[100px] max-h-[200px] overflow-y-auto'>
-          <EmailList emails={emails} onRemove={handleRemoveEmail} />
+        <div className='flex-1 max-h-[200px] overflow-y-auto'>
+          {emails && emails.length > 0 && <EmailList emails={emails} onRemove={handleRemoveEmail} />}
           {error && <div className='text-center text-sm text-red-500'>Error: {error}</div>}
         </div>
       </form>
@@ -88,31 +87,20 @@ interface EmailListProps {
 }
 
 export function EmailList({ emails, onRemove }: EmailListProps) {
-  if (emails.length === 0) {
-    return (
-      <div className='text-center text-sm text-muted-foreground py-4'>
-        No emails added yet
-      </div>
-    )
-  }
-
   return (
-    <div className='space-y-2'>
+    <div className='flex flex-wrap gap-2'>
       {emails.map((email) => (
-        <div key={email} className='flex items-center space-x-2'>
-          <Checkbox id={`email-${email}`} />
-          <label
-            htmlFor={`email-${email}`}
-            className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
-          >
-            {email}
-          </label>
+        <div
+          key={email}
+          className="group flex items-center gap-1 bg-secondary text-secondary-foreground px-2.5 py-0.5 rounded-md text-sm"
+        >
+          <span>{email}</span>
           <button
             onClick={() => onRemove(email)}
-            className='ml-auto text-gray-500 hover:text-gray-700'
+            className="opacity-60 hover:opacity-100 focus:opacity-100 transition-opacity"
             aria-label={`Remove ${email}`}
           >
-            <X className='h-4 w-4' />
+            <X className="h-3 w-3" />
           </button>
         </div>
       ))}
