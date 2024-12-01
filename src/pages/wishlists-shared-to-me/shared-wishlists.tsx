@@ -1,16 +1,7 @@
 import React from 'react'
 import {
-  Edit,
   Search
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -20,49 +11,19 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { Badge } from '@/components/ui/badge'
+import { useQuery } from '@tanstack/react-query'
+import { getSharedToUser } from '@/services/wishlists'
+import useAuth from '@/hooks/useAuth'
+import WishlistSharedItem from '@/components/wishlist-shared-item'
 
 export default function SharedWishlistsPage() {
   const [sharedFilter, setSharedFilter] = React.useState('all')
   const [searchTerm, setSearchTerm] = React.useState('')
-
-  const wishlists = [
-    {
-      id: 1,
-      title: 'Birthday Wishlist',
-      items: 5,
-      shared: false,
-      owner: 'You'
-    },
-    {
-      id: 2,
-      title: 'Christmas Wishlist',
-      items: 8,
-      shared: true,
-      owner: 'Alice Johnson'
-    },
-    {
-      id: 3,
-      title: 'Wedding Registry',
-      items: 12,
-      shared: true,
-      owner: 'Bob Smith'
-    },
-    {
-      id: 4,
-      title: 'Housewarming Wishlist',
-      items: 6,
-      shared: true,
-      owner: 'Charlie Brown'
-    },
-    {
-      id: 5,
-      title: 'Baby Shower Wishlist',
-      items: 15,
-      shared: true,
-      owner: 'Diana Prince'
-    }
-  ]
+  const { user } = useAuth()
+  const { data: wishlists = [], isLoading, refetch } = useQuery({
+    queryKey: ['wishlists-shared-to-user'],
+    queryFn: () => getSharedToUser(user!.id)
+  })
 
   const filteredSharedWishlists = wishlists
     .filter((w) => w.shared)
@@ -81,7 +42,7 @@ export default function SharedWishlistsPage() {
 
   return (
     <>
-      <h2 className='text-3xl font-bold'>Dashboard</h2>
+      <h2 className='text-3xl font-bold'>Shared wishlists</h2>
 
       <div className='mb-4 flex flex-col sm:flex-row gap-4'>
         <div className='flex-1'>
@@ -114,22 +75,10 @@ export default function SharedWishlistsPage() {
         </Select>
       </div>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-        {filteredSharedWishlists.map((wishlist) => (
-          <Card key={wishlist.id}>
-            <CardHeader>
-              <CardTitle className='flex justify-between items-start'>
-                <span>{wishlist.title}</span>
-                <Badge variant='secondary'>{wishlist.owner}</Badge>
-              </CardTitle>
-              <CardDescription>{wishlist.items} items</CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <Button variant='outline' size='sm'>
-                <Edit className='mr-2 h-4 w-4' /> View
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+        {!isLoading && wishlists &&
+          wishlists.map((wishlist) => (
+            <WishlistSharedItem key={wishlist.id} wishlist={wishlist} onSubmit={refetch} />
+          ))}
       </div>
     </>
   )

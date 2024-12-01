@@ -13,6 +13,10 @@ export async function share(id: string, emails: string[]) {
   return await new HttpRequest().post(`wishlists/share/${id}`, emails)
 }
 
+export async function getSharedToUser(id: string) {
+  return await new HttpRequest().get(`wishlists/shared/${id}`).then(res => res.data)
+}
+
 export async function getSharedEmails(id: string) {
   return await new HttpRequest().get(`wishlists/shared/${id}/emails`).then(res => res.data)
 }

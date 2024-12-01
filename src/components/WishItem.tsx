@@ -26,6 +26,7 @@ import { Skeleton } from './ui/skeleton'
 type Props = {
   item: Wish
   wishlist_id?: string,
+  allowActions?: boolean,
   onEdit?: () => void,
   onDelete?: () => void,
 }
@@ -35,7 +36,7 @@ type DeleteButtonProps = {
   onSubmit: (id: string) => void
 }
 
-const WishItem = ({ item, wishlist_id, onEdit = () => {}, onDelete = () => {} }: Props) => {
+const WishItem = ({ item, wishlist_id, allowActions = true, onEdit = () => {}, onDelete = () => {} }: Props) => {
   const { mutate, isPending } = useMutation({
     mutationFn: remove,
     onSuccess: () => onDelete()
@@ -73,10 +74,12 @@ const WishItem = ({ item, wishlist_id, onEdit = () => {}, onDelete = () => {} }:
           )}
         </div>
       </CardHeader>
-      <CardFooter className='gap-x-2'>
+      {allowActions && (
+        <CardFooter className='gap-x-2'>
         <EditWishModal wish={item} wishlist_id={wishlist_id} onSubmit={onEdit} />
         <DeleteButton id={item.id} onSubmit={mutate} />
       </CardFooter>
+      )}
     </Card>
     </>
   )
