@@ -5,13 +5,13 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import { WishList } from '@/types/wishlists'
+import { SharedWishList } from '@/types/wishlists'
 import { useNavigate } from 'react-router-dom'
 import { Button } from './ui/button'
 import { Edit } from 'lucide-react'
 
 type Props = {
-  wishlist: WishList
+  wishlist: SharedWishList
 }
 
 export default function WishlistSharedItem({ wishlist }: Props) {
