@@ -5,7 +5,7 @@ import { Inbox, RefreshCw } from 'lucide-react'
 type Props = {
   title?: string
   description?: string
-  chidlren: JSX.Element | JSX.Element[]
+  chidlren?: JSX.Element | JSX.Element[]
 }
 
 export default function EmptyDataCard({ title, description, chidlren }: Props) {
